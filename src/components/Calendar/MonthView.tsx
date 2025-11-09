@@ -10,9 +10,12 @@ interface Props {
   events: CalendarEvent[];
   onDayClick: (date: Date) => void;
   onEventClick: (event: CalendarEvent) => void;
+  onEventDragStart: (event: CalendarEvent, ev: React.DragEvent) => void;
+  onDropDay: (day: Date) => void;
 }
 
-export const MonthView: React.FC<Props> = ({ monthDate, events, onDayClick, onEventClick }) => {
+
+export const MonthView: React.FC<Props> = ({ monthDate, events, onDayClick, onEventClick,onEventDragStart,onDropDay   }) => {
   const grid = getCalendarGrid(monthDate);
   const weekDays = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 
@@ -25,15 +28,23 @@ export const MonthView: React.FC<Props> = ({ monthDate, events, onDayClick, onEv
         {grid.map((day, i) => {
           const dayEvents = byDay(events, day);
           return (
+            <div
+          key={i}
+          onDragOver={(e) => e.preventDefault()}     // ✅ allow dropping
+          onDrop={() => onDropDay(day)}              // ✅ handle drop
+          className="h-full"
+        >
             <CalendarCell
-              key={i}
+              
               date={day}
               events={dayEvents}
               isToday={isToday(day)}
               isMuted={!inSameMonth(day, monthDate)}
               onDayClick={onDayClick}
               onEventClick={onEventClick}
+              onEventDragStart={onEventDragStart}
             />
+            </div>
           )
         })}
       </div>

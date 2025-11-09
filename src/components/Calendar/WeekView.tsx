@@ -9,9 +9,12 @@ interface Props {
   events: CalendarEvent[];
   onSlotCreate: (start: Date, end: Date) => void;
   onEventClick: (event: CalendarEvent) => void;
+  onEventDragStart: (event: CalendarEvent, ev: React.DragEvent) => void;
+  onDropTimeSlot: (day: Date, hour: number) => void;
+
 }
 
-export const WeekView: React.FC<Props> = ({ anchorDate, events, onSlotCreate, onEventClick }) => {
+export const WeekView: React.FC<Props> = ({ anchorDate, events, onSlotCreate, onEventClick, onEventDragStart, onDropTimeSlot  }) => {
   const start = startOfWeek(anchorDate, { weekStartsOn: 0 });
   const days = Array.from({length:7}, (_,i)=>addDays(start,i));
 
@@ -31,7 +34,10 @@ export const WeekView: React.FC<Props> = ({ anchorDate, events, onSlotCreate, on
       </div>
       <div className="border-r">
         {hours.map(h => (
-          <div key={h} className="h-16 border-t text-xs text-right pr-2">{h}:00</div>
+          <div key={h} className="h-16 border-t text-xs text-right pr-2"
+          onDoubleClick={() => handleClick(day, h)}
+    onDragOver={(e) => e.preventDefault()}        // ✅ allow drop
+    onDrop={() => onDropTimeSlot(day, h)} >{h}:00</div>
         ))}
       </div>
       <div className="grid grid-cols-7">
@@ -45,13 +51,21 @@ export const WeekView: React.FC<Props> = ({ anchorDate, events, onSlotCreate, on
               const mins = differenceInMinutes(e.endDate, e.startDate);
               const height = mins/60*64;
               return (
-                <button key={e.id} className="absolute left-1 right-1 rounded text-xs p-1 overflow-hidden"
+                <button
+                  key={e.id}
+                  draggable       // ✅ make event draggable
+                  onDragStart={(ev) => onEventDragStart(e, ev)}   // ✅ notify parent drag started
+                  className="absolute left-1 right-1 rounded text-xs p-1 overflow-hidden cursor-move"
                   style={{ top, height, backgroundColor: e.color || '#e5e7eb' }}
                   title={e.description}
-                  onClick={()=>onEventClick(e)}
-                >
-                  {e.title}
-                </button>
+                  onClick={(ev) => {
+                    ev.stopPropagation();         // ✅ stops cell click from interfering
+                    onEventClick(e);
+                  }}
+>
+                {e.title}
+              </button>
+
               )
             })}
           </div>

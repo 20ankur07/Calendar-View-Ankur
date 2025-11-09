@@ -11,6 +11,7 @@ interface Props {
   isMuted: boolean;
   onDayClick: (date: Date) => void;
   onEventClick: (event: CalendarEvent) => void;
+  onEventDragStart: (event: CalendarEvent, ev: React.DragEvent) => void;
 }
 
 export const CalendarCell: React.FC<Props> = React.memo(({ date, events, isToday, isMuted, onDayClick, onEventClick }) => {

@@ -1,5 +1,5 @@
 
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { CalendarViewProps, CalendarEvent } from '@/types/calendar.types';
 import { useCalendar } from '@/hooks/useCalendar';
 import { MonthView } from './MonthView';
@@ -38,6 +38,15 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
     setModalOpen(true);
   };
 
+  const [dragData, setDragData] = useState<{
+  event: CalendarEvent;
+  offsetX: number;
+  offsetY: number;
+} | null>(null);
+
+const [mouse, setMouse] = useState({ x: 0, y: 0 });
+
+
   const handleSave = (payload: Omit<CalendarEvent,'id'>, id?: string) => {
     if (id) {
       update(id, payload);
@@ -48,10 +57,50 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
     }
   };
 
+  const onEventDragStart = (event: CalendarEvent, ev: React.DragEvent) => {
+  const rect = (ev.target as HTMLElement).getBoundingClientRect();
+  setDragData({
+    event,
+    offsetX: ev.clientX - rect.left,
+    offsetY: ev.clientY - rect.top,
+  });
+};
+
+  const onDropDay = (targetDate: Date) => {
+  if (!dragData) return;
+
+  const duration =
+    dragData.event.endDate.getTime() - dragData.event.startDate.getTime();
+
+  const newStart = new Date(
+    targetDate.getFullYear(),
+    targetDate.getMonth(),
+    targetDate.getDate(),
+    dragData.event.startDate.getHours(),
+    dragData.event.startDate.getMinutes()
+  );
+
+  const newEnd = new Date(newStart.getTime() + duration);
+
+  update(dragData.event.id, { startDate: newStart, endDate: newEnd });
+  onEventUpdate(dragData.event.id, { startDate: newStart, endDate: newEnd });
+
+  setDragData(null);
+};
+
+
+
   const handleDelete = (id: string) => {
     remove(id);
     onEventDelete(id);
   };
+  useEffect(() => {
+  const move = (e: MouseEvent) => {
+    setMouse({ x: e.clientX, y: e.clientY });
+  };
+  window.addEventListener("mousemove", move);
+  return () => window.removeEventListener("mousemove", move);
+  }, []);
 
   return (
     <div className="bg-white rounded-xl shadow-card p-4 space-y-4">
@@ -69,9 +118,11 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
       </div>
 
       {view==='month' ? (
-        <MonthView monthDate={currentDate} events={events} onDayClick={handleCreateForDay} onEventClick={handleEventClick} />
+        <MonthView monthDate={currentDate} events={events} onDayClick={handleCreateForDay} onEventClick={handleEventClick} onEventDragStart={onEventDragStart} onDropDay={onDropDay}
+/>
       ) : (
-        <WeekView anchorDate={currentDate} events={events} onSlotCreate={(s,e)=>{ setModalInitial({ startDate: s, endDate: e }); setModalOpen(true); }} onEventClick={handleEventClick} />
+        <WeekView anchorDate={currentDate} events={events} onSlotCreate={(s,e)=>{ setModalInitial({ startDate: s, endDate: e }); setModalOpen(true); }} onEventClick={handleEventClick}  onEventDragStart={onEventDragStart} onDropTimeSlot={onDropTimeSlot}
+ />
       )}
 
       <EventModal
