@@ -8,6 +8,9 @@ deployed Storybook is available here:
 
 👉 https://calendar-component-f2af1uwp4-ankurs-projects-92c2fb90.vercel.app/
 
+## Deployed link
+👉 https://calendar-p6ukvx711-ankurs-projects-92c2fb90.vercel.app
+
 
 ## Installation
 ```bash
@@ -58,6 +61,18 @@ The Storybook setup includes multiple scenarios:
 - Vite
 - date-fns
 - zustand (internal event store)
+  
+## Known Limitations
+- Week View may show events one day off due to timezone behavior.
+- Events are not saved persistently (no backend or local storage).
+- Overlapping events are not visually separated.
+- Drag & drop snaps to hour-level precision in Week View.
+- Month View dragging only moves events by full days.
+- Recurring events are not supported.
+- Mobile drag & drop is not implemented.
+- No integration with external calendars (Google/ICS).
+- Performance may degrade with very large numbers of events.
+- Storybook does not persist changes.
 
 ## Contact
 - ankurgiri76555@gmail.com
