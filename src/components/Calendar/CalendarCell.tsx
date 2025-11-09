@@ -14,7 +14,7 @@ interface Props {
   onEventDragStart: (event: CalendarEvent, ev: React.DragEvent) => void;
 }
 
-export const CalendarCell: React.FC<Props> = React.memo(({ date, events, isToday, isMuted, onDayClick, onEventClick }) => {
+export const CalendarCell: React.FC<Props> = React.memo(({ date, events, isToday, isMuted, onDayClick, onEventClick,onEventDragStart }) => {
   const handleClick = useCallback(()=> onDayClick(date), [date, onDayClick]);
   const display = useMemo(()=>events.slice(0,3), [events]);
 
@@ -32,7 +32,7 @@ export const CalendarCell: React.FC<Props> = React.memo(({ date, events, isToday
       </div>
       <div className="space-y-1 overflow-hidden">
         {display.map(e => (
-          <button key={e.id} className="text-xs px-2 py-1 rounded truncate w-full text-left"
+          <button key={e.id} draggable onDragStart={(ev) => onEventDragStart(e, ev)}   className="text-xs px-2 py-1 rounded truncate w-full text-left"
             style={{ backgroundColor: e.color || '#e5e7eb' }}
             title={e.description}
             onClick={(ev)=>{ ev.stopPropagation(); onEventClick(e); }}

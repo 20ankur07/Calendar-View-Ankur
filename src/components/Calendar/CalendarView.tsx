@@ -65,8 +65,7 @@ const [mouse, setMouse] = useState({ x: 0, y: 0 });
     offsetY: ev.clientY - rect.top,
   });
 };
-
-  const onDropDay = (targetDate: Date) => {
+const onDropDay = (targetDate: Date) => {
   if (!dragData) return;
 
   const duration =
@@ -87,6 +86,24 @@ const [mouse, setMouse] = useState({ x: 0, y: 0 });
 
   setDragData(null);
 };
+
+const onDropTimeSlot = (day: Date, hour: number) => {
+  if (!dragData) return;
+
+  const duration =
+    dragData.event.endDate.getTime() - dragData.event.startDate.getTime();
+
+  const newStart = new Date(day);
+  newStart.setHours(hour, 0, 0, 0);
+
+  const newEnd = new Date(newStart.getTime() + duration);
+
+  update(dragData.event.id, { startDate: newStart, endDate: newEnd });
+  onEventUpdate(dragData.event.id, { startDate: newStart, endDate: newEnd });
+
+  setDragData(null);
+};
+
 
 
 
@@ -121,7 +138,13 @@ const [mouse, setMouse] = useState({ x: 0, y: 0 });
         <MonthView monthDate={currentDate} events={events} onDayClick={handleCreateForDay} onEventClick={handleEventClick} onEventDragStart={onEventDragStart} onDropDay={onDropDay}
 />
       ) : (
-        <WeekView anchorDate={currentDate} events={events} onSlotCreate={(s,e)=>{ setModalInitial({ startDate: s, endDate: e }); setModalOpen(true); }} onEventClick={handleEventClick}  onEventDragStart={onEventDragStart} onDropTimeSlot={onDropTimeSlot}
+        <WeekView 
+        anchorDate={currentDate} 
+        events={events} 
+        onSlotCreate={(s,e)=>{ setModalInitial({ startDate: s, endDate: e }); setModalOpen(true); }} 
+        onEventClick={handleEventClick}  
+        onEventDragStart={onEventDragStart} 
+        onDropTimeSlot={onDropTimeSlot}
  />
       )}
 

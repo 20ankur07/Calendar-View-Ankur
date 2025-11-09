@@ -44,7 +44,10 @@ export const WeekView: React.FC<Props> = ({ anchorDate, events, onSlotCreate, on
         {days.map((day, di)=>(
           <div key={di} className="relative border-t border-l">
             {hours.map(h => (
-              <div key={h} className="h-16 border-t cursor-crosshair" onDoubleClick={()=>handleClick(day, h)} />
+              <div key={h} className="h-16 border-t cursor-crosshair" 
+              onDoubleClick={()=>handleClick(day, h)}
+              onDragOver={(e) => e.preventDefault()}
+              onDrop={() => onDropTimeSlot(day, h)}  />
             ))}
             {events.filter(e=> e.startDate.toDateString()===day.toDateString()).map(e=>{
               const top = (e.startDate.getHours()*60 + e.startDate.getMinutes())/60*64/1; // 64px per hour approx
