@@ -1,5 +1,5 @@
 
-import React, { useMemo, useState, useEffect } from 'react';
+import  { useMemo, useState,  } from 'react';
 import { CalendarViewProps, CalendarEvent } from '@/types/calendar.types';
 import { useCalendar } from '@/hooks/useCalendar';
 import { MonthView } from './MonthView';
@@ -43,8 +43,6 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
   offsetX: number;
   offsetY: number;
 } | null>(null);
-
-const [mouse, setMouse] = useState({ x: 0, y: 0 });
 
 
   const handleSave = (payload: Omit<CalendarEvent,'id'>, id?: string) => {
@@ -111,13 +109,7 @@ const onDropTimeSlot = (day: Date, hour: number) => {
     remove(id);
     onEventDelete(id);
   };
-  useEffect(() => {
-  const move = (e: MouseEvent) => {
-    setMouse({ x: e.clientX, y: e.clientY });
-  };
-  window.addEventListener("mousemove", move);
-  return () => window.removeEventListener("mousemove", move);
-  }, []);
+  
 
   return (
     <div className="bg-white rounded-xl shadow-card p-4 space-y-4">

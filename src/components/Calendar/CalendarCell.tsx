@@ -2,7 +2,6 @@
 import React, { useCallback, useMemo } from 'react';
 import { CalendarEvent } from '@/types/calendar.types';
 import { fmt } from '@/utils/date.utils';
-import { sameDay } from '@/utils/event.utils';
 
 interface Props {
   date: Date;

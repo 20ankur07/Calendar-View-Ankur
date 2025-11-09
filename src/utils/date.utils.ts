@@ -1,5 +1,5 @@
 
-import { addDays, addMonths, endOfMonth, format, isSameDay, isSameMonth, startOfMonth, startOfWeek } from 'date-fns'
+import { addDays, addMonths, format, isSameDay, isSameMonth, startOfMonth, startOfWeek } from 'date-fns'
 
 export const fmt = (d: Date, f='d') => format(d, f)
 

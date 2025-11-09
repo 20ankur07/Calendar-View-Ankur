@@ -2,7 +2,7 @@
 import React from 'react';
 import { CalendarEvent } from '@/types/calendar.types';
 import { byDay } from '@/utils/event.utils';
-import { getCalendarGrid, inSameMonth, isToday, fmt } from '@/utils/date.utils';
+import { getCalendarGrid, inSameMonth, isToday,  } from '@/utils/date.utils';
 import { CalendarCell } from './CalendarCell';
 
 interface Props {
@@ -30,8 +30,8 @@ export const MonthView: React.FC<Props> = ({ monthDate, events, onDayClick, onEv
           return (
             <div
           key={i}
-          onDragOver={(e) => e.preventDefault()}     // ✅ allow dropping
-          onDrop={() => onDropDay(day)}              // ✅ handle drop
+          onDragOver={(e) => e.preventDefault()}     
+          onDrop={() => onDropDay(day)}              
           className="h-full"
         >
             <CalendarCell
