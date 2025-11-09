@@ -41,7 +41,19 @@ export const CalendarCell: React.FC<Props> = React.memo(({ date, events, isToday
           </button>
         ))}
         {events.length > 3 && (
-          <span className="text-xs text-primary-600">+{events.length-3} more</span>
+          <span
+  className="block text-xs text-blue-600 cursor-pointer truncate w-full text-left hover:underline"
+  style={{
+    padding: "2px 4px",
+    maxWidth: "100%",
+    overflow: "hidden",
+    whiteSpace: "nowrap",
+    marginTop: "0px"
+  }}
+>
+  +{events.length - 3} more
+</span>
+
         )}
       </div>
     </div>
