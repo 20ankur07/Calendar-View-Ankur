@@ -1,0 +1,21 @@
+npm error code ERESOLVE
+npm error ERESOLVE unable to resolve dependency tree
+npm error
+npm error While resolving: calendar-component@0.1.0
+npm error Found: storybook@10.0.6
+npm error node_modules/storybook
+npm error   dev storybook@"^10.0.6" from the root project
+npm error
+npm error Could not resolve dependency:
+npm error peer storybook@"^8.6.14" from @storybook/react@8.6.14
+npm error node_modules/@storybook/react
+npm error   dev @storybook/react@"8.6.14" from the root project
+npm error
+npm error Fix the upstream dependency conflict, or retry
+npm error this command with --force or --legacy-peer-deps
+npm error to accept an incorrect (and potentially broken) dependency resolution.
+npm error
+npm error
+npm error For a full report see:
+npm error C:\Users\Ankur\AppData\Local\npm-cache\_logs\2025-11-09T14_50_01_262Z-eresolve-report.txt
+npm error A complete log of this run can be found in: C:\Users\Ankur\AppData\Local\npm-cache\_logs\2025-11-09T14_50_01_262Z-debug-0.log
