@@ -30,7 +30,7 @@ export const WeekView: React.FC<Props> = ({
 );
   const days = Array.from({ length: 7 }, (_, i) => addDays(start, i));
 
-  /** ✅ Create an event in correct local time (no timezone shifting) */
+  
   const handleClick = (day: Date, hour: number) => {
     const startLocal = new Date(
       day.getFullYear(),
@@ -55,16 +55,16 @@ export const WeekView: React.FC<Props> = ({
     onSlotCreate(startLocal, endLocal);
   };
 
-  /** Height of an hour row */
+  
   const hourHeight = 64;
 
   return (
     <div className="grid grid-cols-[60px_1fr] h-[80vh]">
 
-      {/* Empty left header column */}
+      {}
       <div></div>
 
-      {/* Day labels */}
+      {}
       <div className="grid grid-cols-7 border-b">
         {days.map((d, i) => (
           <div key={i} className="border-l p-2 text-sm">
@@ -73,7 +73,7 @@ export const WeekView: React.FC<Props> = ({
         ))}
       </div>
 
-      {/* Hour labels */}
+      {}
       <div className="border-r">
         {hours.map((h) => (
           <div
@@ -85,12 +85,12 @@ export const WeekView: React.FC<Props> = ({
         ))}
       </div>
 
-      {/* Main grid */}
+      {}
       <div className="grid grid-cols-7">
         {days.map((day, di) => (
           <div key={di} className="relative border-t border-l">
 
-            {/* Slots for clicking and dropping */}
+            {}
             {hours.map((h) => (
               <div
                 key={h}
@@ -103,7 +103,7 @@ export const WeekView: React.FC<Props> = ({
               />
             ))}
 
-            {/* EVENTS */}
+            {}
             {events.filter((e) => isSameDay(e.startDate, day)).map((e) => {
               console.log(
   "EVENT:",
